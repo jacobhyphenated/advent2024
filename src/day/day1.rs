@@ -3,12 +3,12 @@ use std::fs;
 pub struct Day1;
 
 impl Day<(Vec<i32>, Vec<i32>)> for Day1 {
-    fn read_input(&self) -> (Vec<i32>, Vec<i32>) {
+    fn read_input() -> (Vec<i32>, Vec<i32>) {
         let input = fs::read_to_string("resources/day1.txt").expect("file day1.txt not found");
         parse_input(&input)
     }
 
-    fn part1(&self, input: &(Vec<i32>, Vec<i32>)) -> impl std::fmt::Display {
+    fn part1(input: &(Vec<i32>, Vec<i32>)) -> impl std::fmt::Display {
         let (mut left, mut right) = input.clone();
         left.sort_unstable();
         right.sort_unstable();
@@ -18,7 +18,7 @@ impl Day<(Vec<i32>, Vec<i32>)> for Day1 {
     }
 
     #[allow(clippy::cast_possible_truncation)]
-    fn part2(&self, input: &(Vec<i32>, Vec<i32>)) -> impl std::fmt::Display {
+    fn part2(input: &(Vec<i32>, Vec<i32>)) -> impl std::fmt::Display {
         let (left, right) = input;
         left.iter()
             .map(|lhs| {
@@ -62,16 +62,14 @@ mod tests {
     #[test]
     fn test_part_1() {
         let input = parse_input(TEST_INPUT);
-        let day = Day1;
-        let result =  day.part1(&input);
+        let result =  Day1::part1(&input);
         assert_eq!("11", result.to_string())
     }
 
     #[test]
     fn test_part_2() {
         let input = parse_input(TEST_INPUT);
-        let day = Day1;
-        let result =  day.part2(&input);
+        let result =  Day1::part2(&input);
         assert_eq!("31", result.to_string())
     }
 
