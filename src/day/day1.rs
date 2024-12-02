@@ -1,5 +1,17 @@
 use super::Day;
 use std::fs;
+
+/// Day 1: Historian Hysteria 
+/// 
+/// The Puzzle Input is 2 lists of numbers
+/// 
+/// Part 1: Order each list from smallest to largest, then compare the difference
+/// between each two pairs of numbers across the list.
+/// Return the total distance (the sum of each difference)
+/// 
+/// Part 2: A similarity score is calculated by multiplying the number on the left
+/// by the number of times that number appears in the list on the right.
+/// Return the sum of all similarity scores in the left list.
 pub struct Day1;
 
 impl Day<(Vec<i32>, Vec<i32>)> for Day1 {
