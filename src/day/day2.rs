@@ -15,7 +15,7 @@ use std::fs;
 /// How many reports are safe if one number can be removed from the report?
 pub struct Day2;
 
-impl Day< Vec<Vec<i32>>> for Day2 {
+impl Day<Vec<Vec<i32>>> for Day2 {
     fn read_input() ->  Vec<Vec<i32>> {
         let input = fs::read_to_string("resources/day2.txt").expect("file day2.txt not found");
         parse_input(&input)
