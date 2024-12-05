@@ -23,19 +23,19 @@ impl Day<Vec<Vec<i32>>> for Day2 {
 
     fn part1(input: &Vec<Vec<i32>>) -> impl std::fmt::Display {
         input.iter()
-            .filter(|report| Self::is_safe(*report))
+            .filter(|report| Self::is_safe(report))
             .count()
     }
 
     fn part2(input: &Vec<Vec<i32>>) -> impl std::fmt::Display {
         input.iter()
-            .filter(|report| Self::problem_dampener(*report))
+            .filter(|report| Self::problem_dampener(report))
             .count()
     }
 }
 
 impl Day2 {
-    fn is_safe(report: &Vec<i32>) -> bool {
+    fn is_safe(report: &[i32]) -> bool {
         let increasing = report[0] < report[1];
         for i in 1 .. report.len(){
             if report[i - 1] < report[i] && !increasing {
@@ -53,12 +53,12 @@ impl Day2 {
         true
     }
 
-    fn problem_dampener(report: &Vec<i32>) -> bool {
+    fn problem_dampener(report: &[i32]) -> bool {
         if Self::is_safe(report) {
             return true;
         }
         for i in 0..report.len() {
-            let mut r = report.clone();
+            let mut r = report.to_owned();
             r.remove(i);
             if Self::is_safe(&r) {
                 return true;

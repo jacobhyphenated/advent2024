@@ -61,7 +61,7 @@ fn four_letter_list(start: Point, grid: &Vec2d<char>) -> Vec<String> {
             }
         }
         word.into_iter()
-            .filter_map(|w| w)// get rid of None values
+            .flatten() // get rid of nulls
             .map(|w| grid[w])
             .collect::<String>()
     })
@@ -71,19 +71,17 @@ fn four_letter_list(start: Point, grid: &Vec2d<char>) -> Vec<String> {
 fn is_diagonal(start: usize, grid: &Vec2d<char>) -> bool {
     let a_point = grid.idx_to_point(start);
     let diagonals = [Directions::UpLeft, Directions::UpRight, Directions::DownLeft, Directions::DownRight].into_iter()
-        .map(|d| grid.next_point(a_point, d))
-        .filter_map(|p| p)
-        .map(|p| grid.point_to_idx(p))
+        .filter_map(|d| grid.next_point(a_point, d))
         .collect::<Vec<_>>();
     if diagonals.len() != 4 {
         return false;
     } 
     if let [up_left, up_right, down_left, down_right] = &diagonals[0..4] {
-        let left = [up_left, &start, down_right].into_iter()
-            .map(|idx| grid.grid[*idx])
+        let left = [up_left, &a_point, down_right].into_iter()
+            .map(|p| grid[*p])
             .collect::<String>();
-        let right = [up_right, &start, down_left].into_iter()
-            .map(|idx| grid.grid[*idx])
+        let right = [up_right, &a_point, down_left].into_iter()
+            .map(|p| grid[*p])
             .collect::<String>();
         (left == "MAS" || left == "SAM") && (right == "MAS" || right == "SAM")
     } else {
@@ -93,7 +91,7 @@ fn is_diagonal(start: usize, grid: &Vec2d<char>) -> bool {
     }
 }
 
-fn parse_input(input: &String) -> Vec2d<char>{
+fn parse_input(input: &str) -> Vec2d<char>{
     let chars = input.lines()
         .flat_map(|line| line.trim().chars().collect::<Vec<_>>())
         .collect();
@@ -121,14 +119,14 @@ MXMXAXMASX";
 
     #[test]
     fn test_part_1() {
-        let input = parse_input(&TEST.to_string());
+        let input = parse_input(TEST);
         let result =  Day4::part1(&input);
         assert_eq!("18", result.to_string())
     }
 
     #[test]
     fn test_part_2() {
-        let input = parse_input(&TEST.to_string());
+        let input = parse_input(TEST);
         let result =  Day4::part2(&input);
         assert_eq!("9", result.to_string())
     }

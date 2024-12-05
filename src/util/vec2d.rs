@@ -7,6 +7,8 @@ pub struct Point {
 }
 
 impl Point {
+
+    #[must_use]
     pub fn new(x: i32, y: i32) -> Self {
         Self { x, y }
     }
@@ -35,22 +37,32 @@ pub struct Vec2d<T>
 impl<T> Vec2d<T> 
     where T: Clone
 {
+    #[must_use]
     pub fn in_bounds(&self, point: Point) -> bool {
         let max_y = self.grid.len() as i32 / self.line_len;
         point.x >= 0 && point.y >= 0 && point.x < self.line_len && point.y < max_y 
     }
 
+    /// # Panics
+    /// If you give an index out of bounds of a signed 32 bit integer
+    #[must_use]
     pub fn idx_to_point(&self, idx: usize) -> Point {
         let idx: i32 = idx.try_into().expect("Invalid index");
         Point::new(idx % self.line_len, idx / self.line_len)
     }
 
+    /// # Panics
+    /// if you pass a point that cannot be converted to an index.
+    /// For example: a point with a negative value for x of y.
+    /// Validate your point first using the [`in_bounds`] method
+    #[must_use]
     pub fn point_to_idx(&self, point: Point) -> usize {
         (point.y * self.line_len + point.x)
             .try_into()
             .expect("Invalid Point -> index")
     }
 
+    #[must_use]
     pub fn next_point(&self, point: Point, direction: Directions) -> Option<Point> {
         let next = match direction {
             Directions::Down => Point::new(point.x, point.y + 1),

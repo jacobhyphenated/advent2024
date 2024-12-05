@@ -14,7 +14,7 @@ use std::fs;
 /// 
 /// Part2: Additional instructions are `do()` and `don't()`
 /// `do()` enables further instructions. `don't()` disables further instructions.
-/// Assume the program start enabled. Sum the result of the enabled mul() operations.
+/// Assume the program start enabled. Sum the result of the enabled `mul()` operations.
 pub struct Day3;
 
 impl Day<String> for Day3 {
