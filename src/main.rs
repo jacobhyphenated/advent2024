@@ -1,5 +1,6 @@
 #![warn(clippy::all, clippy::pedantic)]
 mod day;
+pub mod util;
 
 use std::env;
 use std::process;
