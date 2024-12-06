@@ -43,6 +43,8 @@ impl Day<PrintEdits> for Day5 {
                 // Some of these will need multiple passes to fix
                 while !Self::is_valid_edit(&fixed, rules) {
                     for i in 0 .. edit.len() - 1 {
+                        // Look at the next two pages
+                        // if they are being edited in the wrong order, swap them
                         let valid = rules.get(&fixed[i])
                             .map(|set| set.contains(&fixed[i+1]))
                             .unwrap_or(false);
@@ -66,12 +68,9 @@ impl Day5 {
     /// to come before the right number.
     fn is_valid_edit(edit: &Vec<i32>, rules: &HashMap<i32, HashSet<i32>>) -> bool {
         edit.windows(2).all(|slice| {
-            if let Some(set) = rules.get(&slice[0]) {
-                set.contains(&slice[1])
-            } else {
-                // occurs when there are no rule entries for the left number
-                false
-            }
+            rules.get(&slice[0])
+                .unwrap_or(&HashSet::new())
+                .contains(&slice[1])
         })
     }
 }
