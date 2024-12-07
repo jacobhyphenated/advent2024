@@ -16,6 +16,12 @@ type Calibration = (i64, Vec<i64>);
 /// numbers ex: `15 || 80 == 1580`. Sum the valid equations.
 pub struct Day7;
 
+enum Operation {
+    Mul,
+    Add,
+    Cat,
+}
+
 impl Day<Vec<Calibration>> for Day7 {
     fn read_input() -> Vec<Calibration> {
         let input = fs::read_to_string("resources/day7.txt").expect("file day7.txt not found");
@@ -24,18 +30,20 @@ impl Day<Vec<Calibration>> for Day7 {
 
     // Slightly smart brute force approach
     fn part1(input: &Vec<Calibration>) -> impl std::fmt::Display {
+        let operators = &[Operation::Mul, Operation::Add];
         input.iter()
             .filter(|(result, operations)| {
-                try_operations(*result, operations[0], &operations[1..])
+                try_operations(*result, operations[0], &operations[1..], operators)
             })
             .map(|(r, _)| *r)
             .sum::<i64>()
     }
 
     fn part2(input: &Vec<Calibration>) -> impl std::fmt::Display {
+        let operators = &[Operation::Mul, Operation::Add, Operation::Cat];
         input.iter()
             .filter(|(result, operations)| {
-                try_ops_concat(*result, operations[0], &operations[1..])
+                try_operations(*result, operations[0], &operations[1..], operators)
             })
             .map(|(r, _)| *r)
             .sum::<i64>()
@@ -43,42 +51,32 @@ impl Day<Vec<Calibration>> for Day7 {
 }
 
 // Try all possible combinations of operators, but bail out / short circuit aggressively
-fn try_operations(result: i64, current: i64, remaining: &[i64]) -> bool {
+fn try_operations(result: i64, current: i64, remaining: &[i64], operators: &[Operation]) -> bool {
     if current > result {
         return false;
     }
     let next = remaining[0];
     if remaining.len() == 1 {
-        if current + next == result || current * next == result {
+        if operators.iter().any(|op| op.operate(current, next) == result) {
             return true;
         } else {
             return false;
         }
     }
     let next_remaining = &remaining[1..];
-    try_operations(result, next + current, next_remaining) 
-        || try_operations(result, next * current, next_remaining)
+    operators.iter()
+        .map(|op| op.operate(current, next))
+        .any(|updated| try_operations(result, updated, next_remaining, operators))
 }
 
-// It's possible to combine parts 1 and 2 into one function, they are very similar,
-// but I didn't bother for this problem.
-fn try_ops_concat(result: i64, current: i64, remaining: &[i64]) -> bool {
-    if current > result {
-        return false;
-    }
-    let next = remaining[0];
-    let concat = format!("{}{}", current.to_string(), next.to_string()).parse::<i64>().unwrap();
-    if remaining.len() == 1 {
-        if current + next == result || current * next == result || concat == result {
-            return true;
-        } else {
-            return false;
+impl Operation {
+    fn operate(&self, lhs: i64, rhs: i64) -> i64 {
+        match self {
+            Self::Add => lhs + rhs,
+            Self::Mul => lhs * rhs,
+            Self::Cat => format!("{}{}", lhs.to_string(), rhs.to_string()).parse().unwrap()
         }
     }
-    let next_remaining = &remaining[1..];
-    try_ops_concat(result, next + current, next_remaining) 
-        || try_ops_concat(result, next * current, next_remaining)
-        || try_ops_concat(result, concat, next_remaining)
 }
 
 fn parse_input(input: &str) -> Vec<Calibration> {
