@@ -4,6 +4,7 @@ mod day3;
 mod day4;
 mod day5;
 mod day6;
+mod day7;
 
 use day1::Day1;
 use day2::Day2;
@@ -11,6 +12,7 @@ use day3::Day3;
 use day4::Day4;
 use day5::Day5;
 use day6::Day6;
+use day7::Day7;
 
 use std::fmt::Display;
 use std::time::Instant;
@@ -39,6 +41,7 @@ pub fn run(day: i32) {
         4 => Day4::run(),
         5 => Day5::run(),
         6 => Day6::run(),
+        7 => Day7::run(),
         _ => println!("Day {day} not implemented"),
     }
 }
