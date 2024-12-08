@@ -1,4 +1,4 @@
-use std::ops::Index;
+use std::ops::{Add, Index, Sub};
 
 #[derive(Eq, PartialEq, Copy, Clone, Debug, Hash)]
 pub struct Point {
@@ -11,6 +11,24 @@ impl Point {
     #[must_use]
     pub fn new(x: i32, y: i32) -> Self {
         Self { x, y }
+    }
+}
+
+impl Add<Point> for Point {
+    type Output = Point;
+    fn add(self, rhs: Point) -> Point {
+        let x = self.x + rhs.x;
+        let y = self.y + rhs.y;
+        Point { x, y}
+    }
+}
+
+impl Sub<Point> for Point {
+    type Output = Point;
+    fn sub(self, rhs: Point) -> Point {
+        let x = self.x - rhs.x;
+        let y = self.y - rhs.y;
+        Point { x, y}
     }
 }
 
