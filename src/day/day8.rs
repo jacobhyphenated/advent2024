@@ -43,10 +43,12 @@ impl Day<Vec2d<char>> for Day8 {
     fn part1(input: &Vec2d<char>) -> impl std::fmt::Display {
         let antennae = find_antennae(input);
         let mut antinodes = HashSet::new();
+        // nodes are grouped by antenna frequency
         for nodes in antennae.values() {
             if nodes.len() <= 1 {
                 continue;
             }
+            // compare each antenna of the same frequency to all the others
             for i in 0 .. nodes.len() - 1 {
                 for j in i + 1 .. nodes.len() {
                     let diff = nodes[i] - nodes[j];
@@ -58,7 +60,6 @@ impl Day<Vec2d<char>> for Day8 {
         antinodes.into_iter()
             .filter(|&antinode | input.in_bounds(antinode))
             .count()
-
     }
 
     fn part2(input: &Vec2d<char>) -> impl std::fmt::Display {
@@ -70,6 +71,8 @@ impl Day<Vec2d<char>> for Day8 {
             }
             for i in 0 .. nodes.len() - 1 {
                 for j in i + 1 .. nodes.len() {
+                    // Same as part 1, but continue until we reach the bounds edge of our grid
+                    // also add the antennas themselves
                     antinodes.insert(nodes[i]);
                     antinodes.insert(nodes[j]);
                     let diff = nodes[i] - nodes[j];
@@ -86,9 +89,7 @@ impl Day<Vec2d<char>> for Day8 {
                 }
             }
         }
-        antinodes.into_iter()
-            .filter(|&antinode | input.in_bounds(antinode))
-            .count()
+        antinodes.len()
     }
 }
 
