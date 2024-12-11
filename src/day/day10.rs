@@ -40,8 +40,7 @@ impl Day<Vec2d<i32>> for Day10 {
                 }
                 [Directions::Up, Directions::Down, Directions::Left, Directions::Right]
                     .into_iter()
-                    .map(|direction| input.next_point(current, direction))
-                    .flatten()
+                    .filter_map(|direction| input.next_point(current, direction))
                     .filter(|&point| input[point] == input[current] + 1)
                     .for_each(|point| queue.push(point));
             }
@@ -69,14 +68,13 @@ impl Day<Vec2d<i32>> for Day10 {
                 }
                 let next_points = [Directions::Up, Directions::Down, Directions::Left, Directions::Right]
                     .into_iter()
-                    .map(|direction| input.next_point(current, direction))
-                    .flatten()
+                    .filter_map(|direction| input.next_point(current, direction))
                     .filter(|&point| input[point] == input[current] + 1)
                     .collect::<Vec<_>>();
                 
                 // Count the number of times the trail branches into a new path
                 // subtract if the branch hits a dead end
-                if next_points.len() == 0 {
+                if next_points.is_empty() {
                     num_trails -= 1;
                 } else if next_points.len() > 1 {
                     num_trails += next_points.len() - 1;

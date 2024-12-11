@@ -99,10 +99,8 @@ fn find_antennae(input: &Vec2d<char>) -> HashMap<char, Vec<Point>> {
         if *c == '.' {
             continue;
         }
-        if !antennae.contains_key(c) {
-            antennae.insert(*c, Vec::new());
-        }
-        antennae.get_mut(c).unwrap().push(input.idx_to_point(idx));
+        let entry = antennae.entry(*c).or_insert_with(Vec::new);
+        entry.push(input.idx_to_point(idx));
     }
     antennae
 }

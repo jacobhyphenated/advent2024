@@ -9,7 +9,7 @@ type Calibration = (i64, Vec<i64>);
 /// The right side is the result, and the left is the numbers involved in the equation.
 /// These numbers are evaluated on a left to right basis (no order of operations).
 /// 
-/// Part 1: Using either the `+` or `*`` operations between each number, is it possible
+/// Part 1: Using either the `+` or `*` operations between each number, is it possible
 /// to make the left and right sides of the equation work. Return the sum of valid equations.
 /// 
 /// Part 2: There is an additional operator (`||`) called concat. This combines the left and right
@@ -57,11 +57,7 @@ fn try_operations(result: i64, current: i64, remaining: &[i64], operators: &[Ope
     }
     let next = remaining[0];
     if remaining.len() == 1 {
-        if operators.iter().any(|op| op.operate(current, next) == result) {
-            return true;
-        } else {
-            return false;
-        }
+        return operators.iter().any(|op| op.operate(current, next) == result);
     }
     let next_remaining = &remaining[1..];
     operators.iter()
@@ -74,7 +70,7 @@ impl Operation {
         match self {
             Self::Add => lhs + rhs,
             Self::Mul => lhs * rhs,
-            Self::Cat => format!("{}{}", lhs.to_string(), rhs.to_string()).parse().unwrap()
+            Self::Cat => format!("{lhs}{rhs}").parse().unwrap()
         }
     }
 }

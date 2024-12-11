@@ -52,14 +52,14 @@ impl Day<Vec2d<char>> for Day6 {
             .filter(|(idx, _)| {
                 let mut test_obstruction = input.clone();
                 test_obstruction.grid[*idx] = '#';
-                is_guard_loop(test_obstruction)
+                is_guard_loop(&test_obstruction)
             })
             .count()
 
     }
 }
 
-fn is_guard_loop(map: Vec2d<char>) -> bool {
+fn is_guard_loop(map: &Vec2d<char>) -> bool {
     let start_pos = map.grid.iter().enumerate()
         .find(|(_, &c)| c == '^' )
         .map(|(idx, _)| idx)

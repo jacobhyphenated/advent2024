@@ -97,7 +97,7 @@ impl Day<Vec<Mem>> for Day9 {
                 panic!("Invalid Empty Memory block in final array");
             };
             for _ in 0 .. mem.space {
-                sum += idx * mem_idx as i64;
+                sum += idx * i64::from(mem_idx);
                 idx += 1;
             }
         }
@@ -140,11 +140,11 @@ impl Day<Vec<Mem>> for Day9 {
         for mem in memory {
             if let Some(mem_idx) = mem.id {
                 for _ in 0 .. mem.space {
-                    sum += idx * mem_idx as i64;
+                    sum += idx * i64::from(mem_idx);
                     idx += 1;
                 }
             } else {
-                idx += mem.space as i64;
+                idx += i64::from(mem.space);
             }
         }
         sum

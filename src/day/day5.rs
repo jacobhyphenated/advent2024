@@ -46,12 +46,9 @@ impl Day<PrintEdits> for Day5 {
                         // Look at the next two pages
                         // if they are being edited in the wrong order, swap them
                         let valid = rules.get(&fixed[i])
-                            .map(|set| set.contains(&fixed[i+1]))
-                            .unwrap_or(false);
+                            .is_some_and(|set| set.contains(&fixed[i+1]));
                         if !valid {
-                            let current = fixed[i];
-                            fixed[i] = fixed[i+1];
-                            fixed[i+1] = current;
+                            fixed.swap(i, i+1);
                         }
                     }
                 }
@@ -66,7 +63,7 @@ impl Day5 {
     /// Look at every pair of two letters (using `windows(2)`)
     /// The left number should always have a rule entry requiring it
     /// to come before the right number.
-    fn is_valid_edit(edit: &Vec<i32>, rules: &HashMap<i32, HashSet<i32>>) -> bool {
+    fn is_valid_edit(edit: &[i32], rules: &HashMap<i32, HashSet<i32>>) -> bool {
         edit.windows(2).all(|slice| {
             rules.get(&slice[0])
                 .unwrap_or(&HashSet::new())
@@ -80,7 +77,7 @@ fn parse_input(input: &str) -> PrintEdits {
     let edits = split[1].lines()
         .map(|line| { 
             line.trim()
-            .split(",")
+            .split(',')
             .map(|v| v.parse::<i32>().unwrap())
             .collect()
         })
@@ -88,14 +85,13 @@ fn parse_input(input: &str) -> PrintEdits {
 
     let mut rules = HashMap::new();
     for rule in split[0].lines() {
-        let [lhs, rhs]: [i32; 2] = rule.split("|")
+        let [lhs, rhs]: [i32; 2] = rule.split('|')
             .map(|v| v.parse::<i32>().unwrap())
             .collect::<Vec<_>>()
             .try_into().unwrap(); // Force the vec into an array of size two for destructuring
-        if !rules.contains_key(&lhs) {
-            rules.insert(lhs, HashSet::new());
-        }
-        rules.get_mut(&lhs).unwrap().insert(rhs);
+        
+        let entry = rules.entry(lhs).or_insert_with(HashSet::new);
+        entry.insert(rhs);
     }
 
     (rules, edits)
