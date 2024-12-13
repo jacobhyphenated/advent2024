@@ -80,9 +80,14 @@ impl<T> Vec2d<T>
             .expect("Invalid Point -> index")
     }
 
+    /// Find the next point in the direction specified
+    /// 
+    /// ## Warning
+    /// This point is not bounded by the grid and attempting to look
+    /// up the grid value at this point could panic. See [Self::next_point].
     #[must_use]
-    pub fn next_point(&self, point: Point, direction: Directions) -> Option<Point> {
-        let next = match direction {
+    pub fn next_unbounded(&self, point: Point, direction: Directions) -> Point {
+        match direction {
             Directions::Down => Point::new(point.x, point.y + 1),
             Directions::DownLeft => Point::new(point.x - 1, point.y + 1),
             Directions::DownRight => Point::new(point.x + 1, point.y + 1),
@@ -91,7 +96,14 @@ impl<T> Vec2d<T>
             Directions::UpRight => Point::new(point.x + 1, point.y - 1),
             Directions::Left => Point::new(point.x - 1, point.y),
             Directions::Right => Point::new(point.x + 1, point.y),
-        };
+        }
+    }
+
+    /// Finds the next point in the grid in the direction specified.
+    /// Returns `None` if the next point is outside the grid. 
+    #[must_use]
+    pub fn next_point(&self, point: Point, direction: Directions) -> Option<Point> {
+        let next = self.next_unbounded(point, direction);
         if self.in_bounds(next) {
             Some(next)
         } else {

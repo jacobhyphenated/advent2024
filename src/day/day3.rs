@@ -8,13 +8,13 @@ use std::fs;
 /// The puzzle input is a broken program with corrupted characters
 /// 
 /// Part 1: A valid instruction is mul(2,4) which multiplies 2 by 4.
-/// the numbers being multiplied are between 1 and 3 digits long.
-/// instructions with invalide characters do nothing.
+/// The numbers being multiplied are between 1 and 3 digits long.
+/// Instructions with invalid characters do nothing.
 /// Add up the result of all valid mul instructions.
 /// 
-/// Part2: Additional instructions are `do()` and `don't()`
+/// Part2: Additional instructions are `do()` and `don't()`.
 /// `do()` enables further instructions. `don't()` disables further instructions.
-/// Assume the program start enabled. Sum the result of the enabled `mul()` operations.
+/// Assume the program starts enabled. Sum the result of the enabled `mul()` operations.
 pub struct Day3;
 
 impl Day<String> for Day3 {
@@ -37,7 +37,7 @@ impl Day<String> for Day3 {
         let mut on = true;
         let mut sum = 0;
         for capture in re.captures_iter(input) {
-            // `capture.extract();` panics because of differing capture arguments for matchs
+            // `capture.extract();` panics because of differing capture arguments for matches
             let full_string = capture.get(0).unwrap().as_str();
             if full_string == "don't()" {
                 on = false;
