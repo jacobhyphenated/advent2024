@@ -8,6 +8,7 @@ mod day7;
 mod day8;
 mod day9;
 mod day10;
+mod day11;
 
 use day1::Day1;
 use day2::Day2;
@@ -19,6 +20,7 @@ use day7::Day7;
 use day8::Day8;
 use day9::Day9;
 use day10::Day10;
+use day11::Day11;
 
 use std::fmt::Display;
 use std::time::Instant;
@@ -40,6 +42,7 @@ trait Day<T> {
 }
 
 pub fn run(day: i32) {
+    println!("Day {day}:");
     match day {
         1 => Day1::run(),
         2 => Day2::run(),
@@ -51,6 +54,7 @@ pub fn run(day: i32) {
         8 => Day8::run(),
         9 => Day9::run(),
         10 => Day10::run(),
+        11 => Day11::run(),
         _ => println!("Day {day} not implemented"),
     }
 }
