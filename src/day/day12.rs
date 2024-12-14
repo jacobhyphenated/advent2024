@@ -1,4 +1,4 @@
-use crate::util::vec2d::{Directions, Point, Vec2d};
+use crate::util::grid::prelude::*;
 
 use super::Day;
 use std::{collections::HashSet, fs};

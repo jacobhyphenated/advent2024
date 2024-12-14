@@ -1,36 +1,5 @@
-use std::ops::{Add, Index, Sub};
-
-#[derive(Eq, PartialEq, Copy, Clone, Debug, Hash)]
-pub struct Point {
-    x: i32,
-    y: i32,
-}
-
-impl Point {
-
-    #[must_use]
-    pub fn new(x: i32, y: i32) -> Self {
-        Self { x, y }
-    }
-}
-
-impl Add<Point> for Point {
-    type Output = Point;
-    fn add(self, rhs: Point) -> Point {
-        let x = self.x + rhs.x;
-        let y = self.y + rhs.y;
-        Point { x, y}
-    }
-}
-
-impl Sub<Point> for Point {
-    type Output = Point;
-    fn sub(self, rhs: Point) -> Point {
-        let x = self.x - rhs.x;
-        let y = self.y - rhs.y;
-        Point { x, y}
-    }
-}
+use std::ops::Index;
+use super::point::Point;
 
 #[derive(Eq, PartialEq, Copy, Clone, Debug, Hash)]
 pub enum Directions {
@@ -84,7 +53,7 @@ impl<T> Vec2d<T>
     /// 
     /// ## Warning
     /// This point is not bounded by the grid and attempting to look
-    /// up the grid value at this point could panic. See [Self::next_point].
+    /// up the grid value at this point could panic. See [`Self::next_point`].
     #[must_use]
     pub fn next_unbounded(&self, point: Point, direction: Directions) -> Point {
         match direction {

@@ -56,9 +56,9 @@ fn count_rocks(rocks: &[i64], blinks: i64) -> i64 {
 /// The `memo` here is left over from a failed DFS implementation. It's probably not necessary
 /// as all it does is remember the result of a single blick applied to a i32.
 /// But it's staying because I made it work with lifetimes and it probably saves a few ms overall.
-fn blink_rock<'a>(rock: i64, memo: &'a mut HashMap<i64, Vec<i64>>) -> &'a Vec<i64> {
-    if !memo.contains_key(&rock) {
-        let blinked = if rock == 0 {
+fn blink_rock(rock: i64, memo: &mut HashMap<i64, Vec<i64>>) -> &Vec<i64> {
+    memo.entry(rock).or_insert_with(|| {
+        if rock == 0 {
             vec![rock + 1]
         } else if rock.to_string().len() % 2 == 0 {
             let rock_string = rock.to_string();
@@ -67,10 +67,8 @@ fn blink_rock<'a>(rock: i64, memo: &'a mut HashMap<i64, Vec<i64>>) -> &'a Vec<i6
                 .collect()
         } else {
             vec![rock * 2024]
-        };
-        memo.insert(rock, blinked);
-    }
-    return &memo[&rock];
+        }
+    })
 } 
 
 fn parse_input(input: &str) -> Vec<i64> {

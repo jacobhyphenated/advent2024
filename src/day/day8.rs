@@ -1,6 +1,5 @@
 use std::{collections::{HashMap, HashSet}, fs};
-
-use crate::util::vec2d::{Point, Vec2d};
+use crate::util::grid::prelude::*;
 
 use super::Day;
 

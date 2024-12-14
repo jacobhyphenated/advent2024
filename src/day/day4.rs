@@ -1,6 +1,6 @@
 use super::Day;
 use std::fs;
-use crate::util::vec2d::{Vec2d, Directions, Point};
+use crate::util::grid::prelude::*;
 
 /// Day 4: Ceres Searc
 /// 
