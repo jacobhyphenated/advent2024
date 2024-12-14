@@ -32,6 +32,15 @@ impl Sub<Point> for Point {
     }
 }
 
+impl Mul<i32> for Point {
+    type Output = Point;
+    fn mul(self, rhs: i32) -> Self::Output {
+        let x = self.x * rhs;
+        let y = self.y * rhs;
+        Self { x, y }
+    }
+}
+
 #[derive(Eq, PartialEq, Copy, Clone, Debug, Hash)]
 pub struct Point64 {
     pub x: i64,
