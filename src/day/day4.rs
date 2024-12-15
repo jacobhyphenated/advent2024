@@ -2,7 +2,7 @@ use super::Day;
 use std::fs;
 use crate::util::grid::prelude::*;
 
-/// Day 4: Ceres Searc
+/// Day 4: Ceres Search
 /// 
 /// The puzzle input is a 2d word search with the letters X, M, A, and S
 /// 

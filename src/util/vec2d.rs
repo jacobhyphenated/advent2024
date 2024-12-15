@@ -1,4 +1,4 @@
-use std::ops::Index;
+use std::ops::{Index, IndexMut};
 use super::point::Point;
 
 #[derive(Eq, PartialEq, Copy, Clone, Debug, Hash)]
@@ -87,5 +87,13 @@ impl <T: Clone> Index<Point> for Vec2d<T>{
     fn index(&self, index: Point) -> &Self::Output {
         let idx = self.point_to_idx(index);
         &self.grid[idx]
+    }
+}
+
+impl <T: Clone> IndexMut<Point> for Vec2d<T> {
+
+    fn index_mut(&mut self, index: Point) -> &mut Self::Output {
+        let idx = self.point_to_idx(index);
+        self.grid.get_mut(idx).expect("Invalid Index")
     }
 }
