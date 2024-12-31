@@ -34,7 +34,7 @@ impl Day<Vec<Point>> for Day18 {
             grid: vec![true; 71 * 71],
             line_len: 71
         };
-        for &point in input[..1024].iter() {
+        for &point in &input[..1024] {
             grid[point] = false;
         }
         find_path(&grid).unwrap()
@@ -50,7 +50,7 @@ impl Day<Vec<Point>> for Day18 {
                 grid: vec![true; 71 * 71],
                 line_len: 71
             };
-            for &point in input[..=attempt_index].iter() {
+            for &point in &input[..=attempt_index] {
                 grid[point] = false;
             }
             let path = find_path(&grid);

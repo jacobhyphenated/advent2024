@@ -62,7 +62,7 @@ impl Day<Vec<Claw>> for Day13 {
 /// [1 0 | a_presses]
 /// [0 1 | b_presses]
 /// ```
-/// where a_presses and b_presses are whole numbers in a solvable claw machine
+/// where `a_presses` and `b_presses` are whole numbers in a solvable claw machine
 fn linear_algebra(claw: &Claw) -> Option<i64> {
     let (mut ax, mut ay) = claw.button_a.to_f64();
     let (bx, mut by) = claw.button_b.to_f64();

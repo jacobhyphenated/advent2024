@@ -34,6 +34,7 @@ use crate::util::grid::prelude::*;
 /// * one directional keypad operated by you.
 /// * two directional keypads operated by robots.
 /// * one numeric keypad operated by a robot
+/// 
 /// Find the minimum number of key presses you must make to type out the numeric code.
 /// Multiply that number by the numeric part of the code (`029A` would be `29`).
 /// Sum this number up for each code in the puzzle input.
@@ -60,7 +61,7 @@ impl Day<Vec<String>> for Day21 {
 }
 
 // function to set up the robot chains and calculate the final result
-fn solve_for_robot_chain(length: i32, input: &Vec<String>) -> i64 {
+fn solve_for_robot_chain(length: i32, input: &[String]) -> i64 {
     // There are actually only 2 "robot" objects that will be borrowed by all the robot chains
     // the keypad robot, and the directional robot, are built here
     let numeric_keypad = Vec2d {
@@ -135,20 +136,20 @@ impl Robot {
         if self.key_positions.contains_key(&key) {
             return self.key_positions[&key];
         }
-        self.keypad.find(key).expect("Not able to find key in keypad")
+        self.keypad.find(&key).expect("Not able to find key in keypad")
     }
 
     fn load_all_keys(&mut self) {
-        for &key in self.keypad.grid.iter() {
+        for &key in &self.keypad.grid {
             let pos = self.find_key_pos(key);
             self.key_positions.insert(key, pos);
         }
     }
 }
 
-/// RobotState is a lightweight representation of where each robotic arm is at any given time.
+/// `RobotState` is a lightweight representation of where each robotic arm is at any given time.
 /// This class is designed to be cloned and duplicated without bloating memory by only
-/// holding onto a borrow of the [`Robot`]. So all N directional RobotState objects
+/// holding onto a borrow of the [`Robot`]. So all N directional `RobotState` objects
 /// hold the borrow to the same underlying [`Robot`]. We must specify a lifetime for the borrow.
 #[derive(Clone)]
 struct RobotState<'a> {
@@ -290,7 +291,7 @@ fn path_cost<'a>(
 }
 
 fn parse_input(input: &str) -> Vec<String> {
-    input.lines().map(|s| s.to_string()).collect()
+    input.lines().map(ToString::to_string).collect()
 }
 
 #[cfg(test)]

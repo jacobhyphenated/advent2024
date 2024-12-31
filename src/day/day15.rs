@@ -49,12 +49,12 @@ impl Day<Warehouse> for Day15 {
     }
 
     fn part1(input: &Warehouse) -> impl std::fmt::Display {
-        let mut grid = input.0.to_owned();
+        let mut grid = input.0.clone();
         let mut robot = grid.grid.iter().enumerate()
             .filter(|(_, c)| **c == '@')
             .map(|(idx, _)| grid.idx_to_point(idx))
             .next().unwrap();
-        for &movement in input.1.iter() {
+        for &movement in &input.1 {
             let Some(next) = grid.next_point(robot, movement) else {
                 continue;
             };
@@ -138,7 +138,7 @@ fn move_box(from: Point, grid: &mut Vec2d<char>, direction: Directions) -> bool 
         grid[from] = '.';
         return true;
     }
-    return false;
+    false
 }
 
 // We cannot greedily move the large box because there might be 2 independent

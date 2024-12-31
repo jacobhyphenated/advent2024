@@ -11,7 +11,7 @@ use std::collections::BinaryHeap;
 /// but when cheating, many new paths open up.
 /// 
 /// Part 1: You can, one time only, pass through a wall (becoming incorporeal for 2 moves)
-/// Count how many possible solutiosn to the maze exist where cheating will allow you to finish
+/// Count how many possible solutions to the maze exist where cheating will allow you to finish
 /// at least 100 moves faster than the solution without cheating.
 /// 
 /// Part 2: Now when you cheat, you become incorporeal for at most 20 spaces. You do not need
@@ -19,6 +19,8 @@ use std::collections::BinaryHeap;
 /// counts as one possible path (if you take multiple 20 step paths to the same destination,
 /// it still only counts once). Now how many solutions finish the maze at least 100 moves faster?
 pub struct Day20;
+
+const DIRECTIONS: [Directions; 4] = [Directions::Down, Directions::Up, Directions::Left, Directions::Right];
 
 impl Day<Vec2d<char>> for Day20 {
     fn read_input() -> Vec2d<char> {
@@ -28,8 +30,8 @@ impl Day<Vec2d<char>> for Day20 {
 
     // Solved using lots and lots of dijkstra. But it's pretty speedy.
     fn part1(input: &Vec2d<char>) -> impl std::fmt::Display {
-        let start = input.find('S').unwrap();
-        let end = input.find('E').unwrap();
+        let start = input.find(&'S').unwrap();
+        let end = input.find(&'E').unwrap();
          // Full dijkstra distance map from END to all points.
         let dijkstra_map = dijstra_map(end, input);
         let max_time = dijkstra_map[input.point_to_idx(start)] - 100;
@@ -51,7 +53,6 @@ impl Day<Vec2d<char>> for Day20 {
                 continue;
             }
 
-            const DIRECTIONS: [Directions; 4] = [Directions::Down, Directions::Up, Directions::Left, Directions::Right];
             for direction in DIRECTIONS {
                 let Some(next_pos) = input.next_point(current.position, direction) else {
                     continue;
@@ -86,8 +87,8 @@ impl Day<Vec2d<char>> for Day20 {
 
     // Solved the same way as part 1, except we cheat in a different way
     fn part2(input: &Vec2d<char>) -> impl std::fmt::Display {
-        let start = input.find('S').unwrap();
-        let end = input.find('E').unwrap();
+        let start = input.find(&'S').unwrap();
+        let end = input.find(&'E').unwrap();
 
         // Full dijkstra distance map from END to all points.
         let dijkstra_map = dijstra_map(end, input);
@@ -107,7 +108,6 @@ impl Day<Vec2d<char>> for Day20 {
                 continue;
             }
 
-            const DIRECTIONS: [Directions; 4] = [Directions::Down, Directions::Up, Directions::Left, Directions::Right];
             for direction in DIRECTIONS {
                 let Some(next_pos) = input.next_point(current.position, direction) else {
                     continue;
@@ -134,7 +134,7 @@ impl Day<Vec2d<char>> for Day20 {
                         // constant time lookup for how far away the end is from our cheat position
                         let cheat_solve = current.cost + manhattan + dijkstra_map[input.point_to_idx(cheat_point)];
                         if cheat_solve <= max_time {
-                            total_solutions += 1
+                            total_solutions += 1;
                         }
                     }
                 }

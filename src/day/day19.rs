@@ -48,7 +48,7 @@ impl Day<Towels> for Day19 {
 /// The memoization is absolutely essential to eliminate expensive repeating recursive calls
 fn count_patterns<'a>(supply: &Vec<String>, pattern: &'a str, memo: &mut HashMap<&'a str, usize>) -> usize {
     // we've reached the end of the pattern. That means we have a success
-    if pattern == "" {
+    if pattern.is_empty() {
         return 1;
     }
     if let Some(val) = memo.get(pattern) {
@@ -70,8 +70,8 @@ fn count_patterns<'a>(supply: &Vec<String>, pattern: &'a str, memo: &mut HashMap
 
 fn parse_input(input: &str) -> Towels {
     let parts = input.split("\n\n").collect::<Vec<_>>();
-    let supply = parts[0].split(", ").map(|s| s.to_string()).collect::<Vec<_>>();
-    let patterns = parts[1].lines().map(|s| s.to_string()).collect::<Vec<_>>();
+    let supply = parts[0].split(", ").map(ToString::to_string).collect::<Vec<_>>();
+    let patterns = parts[1].lines().map(ToString::to_string).collect::<Vec<_>>();
     (supply, patterns)
 }
 

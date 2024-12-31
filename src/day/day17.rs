@@ -41,7 +41,7 @@ impl Day<Debugger> for Day17 {
 
         // Rust has a `join()` but it only works on strings, not u64
         let output = computer.output.iter()
-            .fold("".to_string(), |acc, next| format!("{acc},{next}" ));
+            .fold(String::new(), |acc, next| format!("{acc},{next}" ));
         output[1..].to_string()
     }
 
@@ -69,7 +69,7 @@ impl Day<Debugger> for Day17 {
                     let mut test_computer = computer.clone();
                     test_computer.register_a = a;
                     run_program(&mut test_computer, program);
-                    (a, test_computer.output.to_owned())
+                    (a, test_computer.output.clone())
                 })
                 .filter(|(_, output)| output[..] == program[from_end..])
                 .map(|(a, _)| a)
@@ -79,7 +79,7 @@ impl Day<Debugger> for Day17 {
     }
 }
 
-fn run_program(computer: &mut Computer, program: &Vec<u64>) {
+fn run_program(computer: &mut Computer, program: &[u64]) {
     let mut instruction_pointer = 0;
     while let Some(&operator) = program.get(instruction_pointer) {
         let operand = program[instruction_pointer + 1];
@@ -87,7 +87,7 @@ fn run_program(computer: &mut Computer, program: &Vec<u64>) {
             0 => computer.register_a /= u64::pow(2, computer.combo_operand(operand).try_into().unwrap()),
             1 => computer.register_b ^= operand,
             2 => computer.register_b = computer.combo_operand(operand) % 8,
-            3 => if computer.register_a != 0 { instruction_pointer = operand as usize },
+            3 => if computer.register_a != 0 { instruction_pointer = usize::try_from(operand).unwrap() },
             4 => computer.register_b ^= computer.register_c,
             5 => computer.output.push(computer.combo_operand(operand) % 8),
             // the rust exponential methods for u64 take a u64 and a u32. Some lossy casting must be performed
@@ -122,7 +122,7 @@ fn parse_input(input: &str) -> Debugger {
     let register_c = parse_register(lines[2]);
 
     let program = lines[4].split(": ").last().unwrap().trim()
-        .split(",")
+        .split(',')
         .map(|s| s.parse::<u64>().unwrap())
         .collect::<Vec<_>>();
     let computer = Computer { register_a, register_b, register_c, output: Vec::new() };
