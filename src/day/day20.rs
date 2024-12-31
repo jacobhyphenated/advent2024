@@ -28,15 +28,8 @@ impl Day<Vec2d<char>> for Day20 {
 
     // Solved using lots and lots of dijkstra. But it's pretty speedy.
     fn part1(input: &Vec2d<char>) -> impl std::fmt::Display {
-        let start = input.grid.iter().enumerate()
-            .filter(|(|_, &c)| c == 'S')
-            .map(|(idx, _)| input.idx_to_point(idx))
-            .next().unwrap();
-        let end = input.grid.iter().enumerate()
-            .filter(|(|_, &c)| c == 'E')
-            .map(|(idx, _)| input.idx_to_point(idx))
-            .next().unwrap();
-
+        let start = input.find('S').unwrap();
+        let end = input.find('E').unwrap();
          // Full dijkstra distance map from END to all points.
         let dijkstra_map = dijstra_map(end, input);
         let max_time = dijkstra_map[input.point_to_idx(start)] - 100;
@@ -93,14 +86,8 @@ impl Day<Vec2d<char>> for Day20 {
 
     // Solved the same way as part 1, except we cheat in a different way
     fn part2(input: &Vec2d<char>) -> impl std::fmt::Display {
-        let start = input.grid.iter().enumerate()
-            .find(|(|_, &c)| c == 'S')
-            .map(|(idx, _)| input.idx_to_point(idx))
-            .unwrap();
-        let end = input.grid.iter().enumerate()
-            .find(|(|_, &c)| c == 'E')
-            .map(|(idx, _)| input.idx_to_point(idx))
-            .unwrap();
+        let start = input.find('S').unwrap();
+        let end = input.find('E').unwrap();
 
         // Full dijkstra distance map from END to all points.
         let dijkstra_map = dijstra_map(end, input);

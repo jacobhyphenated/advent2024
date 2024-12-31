@@ -81,6 +81,17 @@ impl<T> Vec2d<T>
     }
 }
 
+impl <T> Vec2d<T> 
+    where T: Clone,
+    T: PartialEq,
+{
+    pub fn find(&self, item: T) -> Option<Point> {
+        self.grid.iter().enumerate()
+            .find(|(|_, c)| **c == item)
+            .map(|(idx, _)| self.idx_to_point(idx))
+    }
+}
+
 impl <T: Clone> Index<Point> for Vec2d<T>{
     type Output = T;
 
