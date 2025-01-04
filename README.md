@@ -14,7 +14,7 @@ cargo run 4 5 6
 # License
 BSD-3 Clause License
 
-Copyright 2024 Jacob Kanipe-Illig
+Copyright 2025 Jacob Kanipe-Illig
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 

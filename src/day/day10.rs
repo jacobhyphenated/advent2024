@@ -76,7 +76,7 @@ impl Day<Vec2d<i32>> for Day10 {
                 // subtract if the branch hits a dead end
                 if next_points.is_empty() {
                     num_trails -= 1;
-                } else if next_points.len() > 1 {
+                } else {
                     num_trails += next_points.len() - 1;
                 }
 
