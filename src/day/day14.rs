@@ -6,10 +6,10 @@ use std::{collections::HashSet, fs};
 /// Day 14: Restroom Redoubt
 /// 
 /// The puzzle input describes a list of robots with a position and a velocity.
-/// The grid the robots operate on has a lenght of 101 and height of 103.
+/// The grid the robots operate on has a length of 101 and height of 103.
 /// The velocity is in units per second.
-/// When a robot reaches an edge of the grid, the wrap around to the other side.
-/// Robots can overlap each other with no penalty
+/// When a robot reaches an edge of the grid, they wrap around to the other side.
+/// Robots can overlap each other with no penalty.
 /// 
 /// Part 1: Find the position of all robots after the first 100 seconds.
 /// Split the grid into 4 quadrants (and ignore the robots in the exact middles)

@@ -33,7 +33,7 @@ impl Day<Vec2d<char>> for Day20 {
         let start = input.find(&'S').unwrap();
         let end = input.find(&'E').unwrap();
          // Full dijkstra distance map from END to all points.
-        let dijkstra_map = dijstra_map(end, input);
+        let dijkstra_map = dijkstra_map(end, input);
         let max_time = dijkstra_map[input.point_to_idx(start)] - 100;
 
         // Now we'll traverse the maze using dijstra staring at the start point
@@ -91,7 +91,7 @@ impl Day<Vec2d<char>> for Day20 {
         let end = input.find(&'E').unwrap();
 
         // Full dijkstra distance map from END to all points.
-        let dijkstra_map = dijstra_map(end, input);
+        let dijkstra_map = dijkstra_map(end, input);
         let max_time = dijkstra_map[input.point_to_idx(start)] - 100;
 
         let mut distances = vec![i32::MAX; input.grid.len()];
@@ -130,7 +130,11 @@ impl Day<Vec2d<char>> for Day20 {
                     let cheat_point = Point::new(x, y);
                     let manhattan = cheat_point.manhattan_distance(&current.position);
                     // our position after cheating should be in bounds and not a wall
-                    if cheat_point != current.position && input.in_bounds(cheat_point) && input[cheat_point] != '#' && manhattan <= 20 {
+                    if cheat_point != current.position 
+                        && input.in_bounds(cheat_point) 
+                        && input[cheat_point] != '#' 
+                        && manhattan <= 20 
+                    {
                         // constant time lookup for how far away the end is from our cheat position
                         let cheat_solve = current.cost + manhattan + dijkstra_map[input.point_to_idx(cheat_point)];
                         if cheat_solve <= max_time {
@@ -164,7 +168,7 @@ impl PartialOrd for Node {
 
 /// This function returns a dijkstra map of distances from the end point to all other maze points.
 /// This is a useful way to memoize the distances from any point in the maze to the end
-fn dijstra_map(end: Point, grid: &Vec2d<char>) -> Vec<i32> {
+fn dijkstra_map(end: Point, grid: &Vec2d<char>) -> Vec<i32> {
     let mut distances = vec![i32::MAX; grid.grid.len()];
     distances[grid.point_to_idx(end)] = 0;
     let mut queue = BinaryHeap::new();

@@ -46,7 +46,7 @@ impl Day<Network> for Day23 {
     // Sovle using the Bron Kerbosch algorithm
     fn part2(input: &Network) -> impl std::fmt::Display {
         let mut results = Vec::new();
-        let keys = input.keys().map(|k| k.as_str()).collect::<HashSet<_>>();
+        let keys = input.keys().map(String::as_str).collect::<HashSet<_>>();
         bron_kerbosch(
             HashSet::new(),
             keys,
@@ -59,12 +59,12 @@ impl Day<Network> for Day23 {
             .max_by(|r1, r2| r1.len().cmp(&r2.len()))
             .unwrap();
         let mut result = largest_clique.into_iter().collect::<Vec<_>>();
-        result.sort();
+        result.sort_unstable();
         result.join(",")
     }
 }
 
-/// https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm
+/// <https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm>
 /// 
 /// Bron Kerbosch finds the maximum cliques of a graph using recursive backtracking.
 /// This variant calculates a 'pivot' point to reduce the number of recursive calls.
@@ -88,10 +88,10 @@ fn bron_kerbosch<'a>(
         return;
     }
 
-    let mut pivot_keys = vertices.union(&exclusion).into_iter().collect::<Vec<_>>();
+    let mut pivot_keys = vertices.union(&exclusion).collect::<Vec<_>>();
     pivot_keys.sort_by(|&&k1, &&k2| network[k2].len().cmp(&network[k1].len()));
     let pivot = pivot_keys[0];
-    let pivot_neighbors = neighbors(*&pivot, network);
+    let pivot_neighbors = neighbors(pivot, network);
     let sub_graph_vertices = vertices.difference(&pivot_neighbors)
         .copied()
         .collect::<HashSet<_>>();
@@ -129,11 +129,11 @@ fn parse_input(input: &str) -> Network {
 
         network
             .entry(lhs.clone())
-            .or_insert_with(|| HashSet::new())
+            .or_insert_with(HashSet::new)
             .insert(rhs.clone());
         network
             .entry(rhs)
-            .or_insert_with(|| HashSet::new())
+            .or_insert_with(HashSet::new)
             .insert(lhs);
     }
 

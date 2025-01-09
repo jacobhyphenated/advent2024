@@ -7,7 +7,7 @@ use std::cmp::Ordering;
 /// Day 16: Reindeer Maze
 /// 
 /// The puzzle input represents a 2D maze where S is the starting position, and E is the end position.
-/// Start facing in the right direction. Each step forware costs 1, and each 90 degree turn costs 1000.
+/// Start facing in the right direction. Each step forward costs 1, and each 90 degree turn costs 1000.
 /// 
 /// Part 1: What is the lowest cost path to get to the end of the maze?
 /// 
@@ -25,10 +25,7 @@ impl Day<Vec2d<char>> for Day16 {
     // Note that we must track both position and direction as the same position might be crossed
     // from a separate direction with a very different cost score.
     fn part1(input: &Vec2d<char>) -> impl std::fmt::Display {
-        let start = input.grid.iter().enumerate()
-            .filter(|(|_, &c)| c == 'S')
-            .map(|(idx, _)| input.idx_to_point(idx))
-            .next().unwrap();
+        let start = input.find(&'S').unwrap();
         let start_direction = Directions::Right;
 
         let mut distances:HashMap<(Point, Directions), i32> = HashMap::new();
@@ -53,7 +50,7 @@ impl Day<Vec2d<char>> for Day16 {
                 if input[next_point] == '#' {
                     continue;
                 }
-                let next_cost = current_cost + 1 + if next_direction == current.direction { 0 } else { 1000 };
+                let next_cost = current.cost + 1 + if next_direction == current.direction { 0 } else { 1000 };
                 if next_cost < *distances.get(&(next_point, next_direction)).unwrap_or(&i32::MAX) {
                     distances.insert((next_point, next_direction), next_cost);
                     queue.push(Node { cost: next_cost, position: next_point, direction: next_direction, parent: None });
@@ -66,7 +63,7 @@ impl Day<Vec2d<char>> for Day16 {
     fn part2(input: &Vec2d<char>) -> impl std::fmt::Display {
         let paths = best_paths(input);
         paths.into_iter()
-            .flat_map(|path| path.into_iter().collect::<HashSet<_>>())
+            .flatten()
             .collect::<HashSet<_>>()
             .len()
     }
@@ -98,10 +95,7 @@ impl PartialOrd for Node {
 // 
 // Also changes our nodes to keep track of their parent so we can re-build the exact path taken.
 fn best_paths(input: &Vec2d<char>) -> Vec<Vec<Point>> {
-    let start = input.grid.iter().enumerate()
-        .filter(|(|_, &c)| c == 'S')
-        .map(|(idx, _)| input.idx_to_point(idx))
-        .next().unwrap();
+    let start = input.find(&'S').unwrap();
     let start_direction = Directions::Right;
 
     let mut distances:HashMap<(Point, Directions), i32> = HashMap::new();
@@ -136,7 +130,7 @@ fn best_paths(input: &Vec2d<char>) -> Vec<Vec<Point>> {
             if input[next_point] == '#' {
                 continue;
             }
-            let next_cost = current_cost + 1 + if next_direction == current.direction { 0 } else { 1000 };
+            let next_cost = current.cost + 1 + if next_direction == current.direction { 0 } else { 1000 };
             if next_cost <= *distances.get(&(next_point, next_direction)).unwrap_or(&i32::MAX) {
                 distances.insert((next_point, next_direction), next_cost);
                 let next_node = Node { 

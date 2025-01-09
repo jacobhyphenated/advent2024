@@ -72,9 +72,10 @@ impl Day<Vec<i64>> for Day22 {
 }
 
 fn next_secret(secret: i64) -> i64 {
-    let step1 = ((secret * 64) ^ secret) % 16777216;
-    let step2 = ((step1 / 32) ^ step1) % 16777216;
-    ((step2 * 2048) ^ step2) % 16777216
+    const TRUNC: i64 = 16_777_216;
+    let step1 = ((secret * 64) ^ secret) % TRUNC;
+    let step2 = ((step1 / 32) ^ step1) % TRUNC;
+    ((step2 * 2048) ^ step2) % TRUNC
 }
 
 fn build_price_map(secret: i64) -> HashMap<[i32; 4], i32> {

@@ -50,10 +50,8 @@ impl Day<Warehouse> for Day15 {
 
     fn part1(input: &Warehouse) -> impl std::fmt::Display {
         let mut grid = input.0.clone();
-        let mut robot = grid.grid.iter().enumerate()
-            .filter(|(_, c)| **c == '@')
-            .map(|(idx, _)| grid.idx_to_point(idx))
-            .next().unwrap();
+        let mut robot = grid.find(&'@').unwrap();
+
         for &movement in &input.1 {
             let Some(next) = grid.next_point(robot, movement) else {
                 continue;
@@ -93,10 +91,7 @@ impl Day<Warehouse> for Day15 {
             grid: updated_grid,
             line_len: input_grid.line_len * 2,
         };
-        let mut robot = grid.grid.iter().enumerate()
-            .filter(|(_, c)| **c == '@')
-            .map(|(idx, _)| grid.idx_to_point(idx))
-            .next().unwrap();
+        let mut robot = grid.find(&'@').unwrap();
 
         for &movement in instructions {
             let Some(next) = grid.next_point(robot, movement) else {

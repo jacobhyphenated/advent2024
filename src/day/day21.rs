@@ -245,7 +245,7 @@ fn path_cost<'a>(
     while let Some(current) = queue.pop() {
         let position = current.state.current_pos;
         let parent = current.state.parent.clone().unwrap();
-        if current.cost + position.manhattan_distance(&end) as i64 > best_solution.1 {
+        if current.cost + i64::from(position.manhattan_distance(&end)) > best_solution.1 {
             continue;
         }
         if position == end {
@@ -276,7 +276,7 @@ fn path_cost<'a>(
             };
             let (updated_parent, parent_cost) =  path_cost(parent.clone(), parent_key, memo);
             let new_cost = current.cost + parent_cost;
-            let h = new_cost + next_pos.manhattan_distance(&end) as i64;
+            let h = new_cost + i64::from(next_pos.manhattan_distance(&end));
             if h <= best_solution.1 {
                 let mut state = current.state.clone();
                 state.current_pos = next_pos;

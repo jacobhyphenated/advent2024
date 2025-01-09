@@ -57,9 +57,9 @@ impl Day<Input> for Day24 {
     /// some of the debugging code used to find it. The process was something like:
     /// * Observe how the logic gates build the `z` numbers. `z00` and `z01` are easy to follow.
     /// * Observing `z02`, we can notice clear patterns. Look through the each z output to find
-    /// z values that deviate from the pattern. These z values need swapped.
+    ///   z values that deviate from the pattern. These z values need swapped.
     /// * We can also compare the z bit outputs from what the expected sum result should be. This
-    /// tells us what z bits are wrong, and indicates roughtly where a swap is needed.
+    ///   tells us what z bits are wrong, and indicates roughtly where a swap is needed.
     /// * Try out the different swaps and see what works, checking against the expected result.
     fn part2(input: &Input) -> impl std::fmt::Display {
         let (wires, gates) = input;
@@ -76,9 +76,9 @@ impl Day<Input> for Day24 {
             ("z23", "qqp"),
             ("z36", "fbq"),
         ];
-        swaps.iter().for_each(|&(s1, s2)|{
+        for &(s1, s2) in &swaps {
             swap_outputs(s1, s2, &mut gates);
-        });
+        }
 
         let expected = binary_num('x', &wires) + binary_num('y', &wires);
         let wire_result = run_gates(&wires, &gates.iter().collect());
@@ -109,7 +109,7 @@ impl Day<Input> for Day24 {
         let mut swapped = swaps.into_iter()
             .flat_map(|(s1, s2)| vec![s1, s2])
             .collect::<Vec<_>>();
-        swapped.sort();
+        swapped.sort_unstable();
         swapped.join(",")
     }
 }
@@ -123,7 +123,7 @@ fn run_gates(wires: &HashMap<String, bool>, gates: &Vec<&Gate>) -> HashMap<Strin
     while !unused_gates.is_empty() {
         let mut skipped = Vec::new();
         for &gate in &unused_gates {
-            if wires.get(&gate.lhs).is_none() || wires.get(&gate.rhs).is_none() {
+            if !wires.contains_key(&gate.lhs) || !wires.contains_key(&gate.rhs) {
                 skipped.push(gate);
                 continue;
             }
@@ -160,15 +160,15 @@ fn binary_num(starting_char: char, wires: &HashMap<String, bool>) -> i64 {
 
 // Mutating the gates in place is a little complicated, but more efficient
 // and works fine for what we need it to do in part 2
-fn swap_outputs(o1: &str, o2: &str, gates: &mut Vec<Gate>) {
+fn swap_outputs(o1: &str, o2: &str, gates: &mut [Gate]) {
     let idx1 = gates.iter()
         .enumerate()
-        .find(|(_, g)| &g.output == o1)
+        .find(|(_, g)| g.output == o1)
         .map(|(idx, _)| idx)
         .unwrap();
     let idx2 =  gates.iter()
         .enumerate()
-        .find(|(_, g)| &g.output == o2)
+        .find(|(_, g)| g.output == o2)
         .map(|(idx, _)| idx)
         .unwrap();
     let g1 = gates.get_mut(idx1).unwrap();
