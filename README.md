@@ -2,6 +2,8 @@
 
 [Advent of Code](https://adventofcode.com/2024/) is a set of small yearly programming problems for a variety of skill levels. They can be solved in any programming language; this year I chose Rust to expiriment more with the language. Rust is not my primary language, so I'm using this as a learning exercise.
 
+This repository contains completed solutions to all problems for 2024 (50 stars). Do not look at these solutions if you don't want spoilers.
+
 ### Running the Code
 If Rust is installed on the machine, you can run the code with `cargo run <day>` using the `day` variable to specify what days should be run. You may specify multiple days.
 

@@ -95,7 +95,7 @@ fn solve_for_robot_chain(length: i32, input: &[String]) -> i64 {
     let key_state = RobotState {
         robot: &key_robot,
         current_pos: key_robot.find_key_pos('A'),
-        level: 26,
+        level: length + 1,
         parent: Box::new(Some(parent)),
     };
 
